@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import { type HeroFullResponse } from '../service/Interfaces';
+import { heroes } from '../service/heroes.data.ts'
+---
+
+<Layout title="Dota Draft">
+	<section>
+		{heroes.map((hero)=>
+			<div class="grid-item">
+				<Hero
+					hero={hero}
+				/>
+			</div>
+		)}
+	</section>
+</Layout>
+
+<style lang="scss">
+	section {
+		text-align: center;
+		display: grid;
+		grid-template-columns: auto auto auto;
+		grid-auto-flow: row;
+		grid-gap: 20px;
+		justify-items: center;
+		align-items: center;
+		width: fit-content;
+	}
+</style>

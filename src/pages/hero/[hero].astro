@@ -1,0 +1,78 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/Hero.astro";
+import { heroes } from '../../service/heroes.data'
+import { type HeroFullResponse } from "../../service/Interfaces";
+import { slide } from "astro:transitions";
+import { Image } from "astro:assets";
+
+const CDN = "https://cdn.cloudflare.steamstatic.com"
+
+let { hero } = Astro.params
+if ( hero !== undefined && !Number.isInteger(hero) ) {
+    Astro.redirect('/')
+}
+// const selected = heroes[Number.parseInt(hero as string)-1];
+const selected = heroes.find( h => {
+    return h.id == Number.parseInt(hero as string)
+})
+if (selected == undefined) {
+    Astro.redirect('/')
+}
+---
+
+<Layout title="Dota Draft">
+    <div class="hero-container">
+        <div class="hero-sidebar">
+            <Image
+                transition:name={"hero-animate"+selected?.name}
+                transition:animate={"none"}
+                class="hero" 
+                alt={selected?.name ?? 'No hero found'} 
+                src={CDN+selected?.img} 
+                width={256} 
+                height={144}
+            />
+        </div>
+        <div class="hero-main">
+            <div class="hero-header">
+                <span class="hero-name" transition:name={"hero-title-"+selected?.name}>
+                    {selected?.localized_name.toUpperCase()}
+                </span>
+            </div>
+            <video 
+                src={CDN+"/apps/dota2/videos/dota_react/heroes/renders/"+selected?.localized_name.toLowerCase().replace('-','').replace(' ','_')+".webm"}
+                autoplay
+                preload="auto"
+                loop
+                playsinline
+            ></video>
+        </div>
+    </div>
+</Layout>
+
+<style lang="scss">
+    .hero-container{
+        width: 1000px;
+        padding: 40px;
+        background-color: gray;
+        display: flex;
+        flex-direction: row;
+        .hero-header{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            .hero-name {
+                font-family: 'Reaver';
+                font-weight: bolder;
+                font-size: 64px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+        video {
+            width: 100%;
+            height: auto;
+        }
+    }
+</style>

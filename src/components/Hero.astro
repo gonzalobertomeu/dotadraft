@@ -1,0 +1,73 @@
+---
+import { Image } from "astro:assets";
+import { type HeroFullResponse } from "../service/Interfaces";
+
+interface Props {
+    hero: HeroFullResponse
+}
+
+const { hero } = Astro.props;
+const CDN = "https://cdn.cloudflare.steamstatic.com"
+---
+
+<a href={'/hero/'+hero.id} class="heroes-container">
+    <div class="overlay">
+        <Image 
+            transition:name={"hero-animate-"+hero.name}
+            transition:animate={"none"}
+            class="hero" 
+            alt={hero.name} 
+            src={CDN+hero.img} 
+            width={256} 
+            height={144}
+        />
+    </div>
+    <span transition:name={"hero-title-"+hero.name}>{hero.localized_name.toUpperCase()}</span>
+</div>
+
+<style lang="scss">
+    .heroes-container {
+        text-decoration: none;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: fit-content;
+        position: relative;
+
+        .overlay::after {
+            content: "";
+            height: 144px;
+            width: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(to top, rgba(0,0,0,.8), transparent);
+            opacity: 0;
+            transition: opacity .3s;
+        }
+
+        &:hover {
+            .overlay::after {
+                opacity: 1;
+                transition: opacity .3s;
+            }
+            span {
+                opacity: 1;
+                bottom: 10px;
+                transition: opacity .4s, bottom .6s;
+            }
+        }
+
+        span {
+            position:absolute;
+            font-family: 'Reaver';
+            font-weight: bold;
+            font-size: 16px;
+            letter-spacing: 2px;
+            bottom: 4px;
+            opacity: 0;
+            transition: opacity .4s, bottom .6s;
+        }
+    }
+</style>

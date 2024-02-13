@@ -1,0 +1,37 @@
+---
+import { Image, imageConfig } from "astro:assets";
+import dota_logo from '../assets/dota-logo.png'
+
+function home() {
+    Astro.redirect('/')
+}
+---
+
+<header>
+    <a href="/">
+        <Image class="center-logo" src={dota_logo} alt="main dota logo" height="100"/>
+    </a>
+</header>
+
+<style>
+    header{
+        z-index: 9;
+        height: 80px;
+        background-image: url("../assets/rocks.png");
+        background-repeat: repeat-x;
+        background-position: center;
+        background-clip: content-box;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.4);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+    .center-logo{ 
+        z-index: 10;
+        filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, .6));
+    }
+</style>
